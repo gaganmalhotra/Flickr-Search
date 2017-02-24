@@ -1,0 +1,99 @@
+<!doctype html>
+
+<html ng-app="app" ng-controller="controller" ng-init='init()'>
+
+<head>
+    <title>Flickr Search</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/app.css" />
+</head>
+
+<script type="text/ng-template" id="modalContent.html">
+    <div class="modal-header">
+        <h3 class="modal-title">{{selectedImg.title}}</h3>
+    </div>
+
+    <div class="container">
+        <form name="imageSizes">
+            <div class="row">
+                <div class="col-md-3 modalImg">
+                    <img src="{{selectedImg.src}}" height="220" width="250" alt="flickr_logo" />
+                </div>
+                <div class="col-md-8">
+                    <div ng-repeat="detail in selectedDetails">
+                        <a ng-href="{{detail.source}}" target="_blank">{{detail.label}}</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+    <div class="modal-footer">
+        <button class="btn btn-lg" ng-click="cancel()">Close</button>
+    </div>
+</script>
+
+<body>
+
+    <div class="container">
+        <div class="row">
+            <div class="jumbotron">
+                <div class="row">
+                    <div class="col-md-3">
+                        <img src="/images/Flickr-icon.png" height="100" width="100" alt="flickr_logo" />
+                    </div>
+                    <div class="col-md-8">
+                        <h1 class="blue" style="color:#2196F3;">Flickr Image Search!</h1>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="searchBar container">
+            <div class="col-sm-3">
+            </div>
+            <div class="col-sm-8 row">
+                <div class="col-sm-6">
+                    <input type="text" ng-model="query" class="form-control" placeholder="Find by Name..." autofocus>
+                </div>
+
+                <div class="col-sm-6 form-group">
+                    <label>Sort by: </label>
+                    <input type="radio" class="radioSort" ng-model="sortPref" value="title" ng-click="setSortingOrder(sortPref)"> Name </input>
+                    <input type="radio" class="radioSort" ng-model="sortPref" value="id" ng-click="setSortingOrder(sortPref)"> ID </input>
+                </div>
+            </div>
+        </div>
+
+        <div class="loading" ng-show="loading">Loading&#8230;</div>
+        <div class="row" infinite-scroll='loadMore()' infinite-scroll-distance='2'>
+            <div ng-repeat="image in img | filter:query | orderBy : selectedOrder">
+                <div class="col-sm-4">
+                    <div class="thumbnail">
+                        <img class="cardImg" src="{{image.src}}" alt="" ng-click="open(image)">
+                        <div class="caption">
+                            <h4>{{image.title}}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/angular/angular.min.js"></script>
+    <script src="/angular-route/angular-route.min.js"></script>
+    <script type='text/javascript' src="/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
+    <script type='text/javascript' src='/ng-infinite-scroll/build/ng-infinite-scroll.min.js'></script>
+    <script src="/js/app.js"></script>
+    <script src="/js/controllers.js"></script>
+    <script src="/js/services.js"></script>
+    <script src="/js/directives.js"></script>
+</body>
+
+</html>
